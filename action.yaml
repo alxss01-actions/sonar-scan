@@ -16,6 +16,9 @@ inputs:
   token:
     description: Token de Acesso ao Sonarqube
     required: true
+outputs:
+  time:
+    description: Horário em timestamp. Testando Outputs
 
 runs:
   using: node20

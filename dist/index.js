@@ -29915,7 +29915,15 @@ const github = __nccwpck_require__(3228);
 
 async function run() {
   try {
-    console.log("Hello World!");
+    const projectName = core.getInput("projectName", { required: true });
+    const projectKey = core.getInput("projectKey", { required: true });
+    const appVersion = core.getInput("appVersion", { required: false });
+    const url = core.getInput("url", { required: true });
+    const token = core.getInput("token", { required: true });
+
+    console.log(`Nome do Projeto: ${projectName}`);
+
+    core.setOutput("time", new Date().toTimeString());
   } catch (error) {
     core.setFailed(error.message);
   }
