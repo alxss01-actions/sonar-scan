@@ -18,5 +18,14 @@ inputs:
     required: true
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: composite
+
+  steps:
+    - name: Sonar Scanner
+      run: |
+        mvn sonar:sonar -Dsonar.projectName=${{ inputs.projectName }} \
+          -Dsonar.projectKey=${{ inputs.artifactId }}:${{ inputs.projectKey }} \
+          -Dsonar.projectVersion=${{ inputs.appVersion }} \
+          -Dsonar.host.url=${{ inputs.url }} \
+          -Dsonar.login=${{ inputs.token }}
+      shell: bash
