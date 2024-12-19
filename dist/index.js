@@ -29912,6 +29912,7 @@ function wrappy (fn, cb) {
 
 const core = __nccwpck_require__(7484);
 const github = __nccwpck_require__(3228);
+const { exec } = __nccwpck_require__(5317);
 
 async function run() {
   try {
@@ -29921,8 +29922,22 @@ async function run() {
     const url = core.getInput("url", { required: true });
     const token = core.getInput("token", { required: true });
 
-    console.log(`Nome do Projeto: ${projectName}`);
+    const command =
+      `mvn sonar:sonar -Dsonar.projectName=${projectName} ` +
+      `-Dsonar.projectKey=${projectKey} ` +
+      `-Dsonar.projectVersion=${appVersion} ` +
+      `-Dsonar.host.url=${url} ` +
+      `-Dsonar.login=${token}`;
 
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        core.setFailed(`Erro ao executar Sonar Scanner: ${error.message}`);
+      }
+      if (stderr) {
+        core.warning(`Aviso: ${stderr}`);
+      }
+      core.info(stdout);
+    });
     core.setOutput("time", new Date().toTimeString());
   } catch (error) {
     core.setFailed(error.message);
