@@ -1,0 +1,31 @@
+name: Sonar Scanner
+
+inputs:
+  projectName:
+    description: Nome do projeto no Sonarqube
+    required: true
+  projectKey:
+    description: GroupId projetos Java e Name demais projetos
+    required: true
+  appVersion:
+    description: Versão da aplicação
+    required: false
+  url:
+    description: URL para publicação do resultado de Scan
+    required: true
+  token:
+    description: Token de Acesso ao Sonarqube
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Sonar Scanner
+      run: |
+        mvn sonar:sonar -Dsonar.projectName=${{ inputs.projectName }} \
+          -Dsonar.projectKey=${{ inputs.artifactId }}:${{ inputs.projectKey }} \
+          -Dsonar.projectVersion=${{ inputs.appVersion }} \
+          -Dsonar.host.url=${{ inputs.url }} \
+          -Dsonar.login=${{ inputs.token }}
+      shell: bash
